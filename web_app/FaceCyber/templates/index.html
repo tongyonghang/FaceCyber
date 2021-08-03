@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>FaceCyber</title>
+</head>
+
+<body style="background-image:url('{%static 'image/1.jpg' %}');">
+  {% csrf_token %}
+<!-- Navbar -->
+<div class="w3-top" >
+    <div class="w3-bar w3-card w3-large w3-light-grey">
+      <a href="/" class="w3-bar-item w3-button w3-padding-large">FaceCyber</a>
+      <a href="/accounts/login" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">Login</a>
+      <a href="/accounts/register" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">Register</a>
+    </div>
+  </div>
+  
+  <!-- Header -->
+  <div class="w3-container w3-center" style="height:900px;">
+    <p class="w3-jumbo" style="margin-top:300px;">Welcome to FaceCyber</p>
+    <p class="w3-xlarge">Your solution to monitor your aggressive behavior on Facebook</p>
+    <p class="w3-xlarge">Please think twice. What you write might hurt someone</p>
+  </div>
+
+</body>
+</html>

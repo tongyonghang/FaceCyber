@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <title>FaceCyber Extension</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="popup.js"></script>
+    <script src="auto_login.js"></script>
+    <script src="link_direct.js"></script>
+</head>
+<body>
+    <div class="form_group" style="padding-bottom: 10px;">
+      <h3>Welcome to FaceCyber Web Extension</h3>
+        <label for="uname"><strong>Username</strong></label><br>
+        <input type="text" name="username" id="username" placeholder="Enter Username"><br>
+        <label for="pass"><strong>Password</strong></label><br>
+        <input type="password" name="password" id="password" placeholder="Enter Password"><br>
+        <input  id="keywordsubmit" type="submit" value="Login">
+        <button id="button_style" onclick="link_onlick()">FaceCyber Web Apps</button>
+    </div>
+    <div class="main_page" style="top:0; position:absolute; width:530px; margin-bottom:5px;">
+      <h3>Welcome to FaceCyber Web Extension</h3>
+      <div class="main_content_box">
+          <h4 style="font-size:larger;"class="ext_username"></h4>
+          <div class="main box">
+
+          <div class="split left">
+              <div class="centered">
+                <div class="ranking box">
+                  <div><strong>Facebook Username</strong></div>
+                  <p class="ext_fb_name"></p>
+                  <div><strong>Bully Score</strong></div>
+                  <p class='ext_score'></p>
+                  <p class='test_name'></p>
+                </div> 
+              </div>
+            </div>
+            
+            <div class="split right">
+              <div class="centered"> 
+                  <div class="post box">
+                      <div><strong>Facebook Friends Ranking</strong></div>
+                      <p class='ext_rank'></p>
+                    </div>  
+              </div>
+            </div>
+
+          </div>
+      </div>
+      <input id="keylogout" type="submit" value="Logout">
+  </div>
+</body>
+</html>

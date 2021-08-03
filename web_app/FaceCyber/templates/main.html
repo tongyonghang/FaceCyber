@@ -1,0 +1,931 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'css/accounts_style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>FaceCyber-Main</title>
+</head>
+
+<body style="background-image:url('{%static 'image/1.jpg' %}');">
+  {% block content %}
+<!-- Navbar -->
+<div class="w3-top">
+    <div class="w3-bar w3-light-grey w3-card w3-large">
+      <a class="w3-bar-item w3-padding-large">FaceCyber</a>
+      <a href="/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">Logout</a>
+      <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right"  onclick="Profile_function()">Profile</a>
+      <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right"  onclick="Main_function()">Statistic</a>
+      <a class="w3-bar-item w3-padding-large w3-right">Welcome {{username}}</a>
+    </div>
+</div>
+  <div class="main box" id="main" style="color:white;">
+  <!-- Header -->
+  <div class="split left">
+    <div class="centered">
+      <div class="bully box">
+        <h2>User Information</h2><br>
+        <div class="set">Facebook Username <p class="set_1">: {{facebook_name}}</p></div>
+        <div class="set">Bully Score <p class="set_1">: {{bully_score}}</p></div>
+      </div>
+        <div class="ranking box">
+          <h2>Facebook Friends Ranking</h2><br>
+          {% if not ranking %}
+            <div> Empty Ranking </div>
+          {% else %}
+            {% for user_friend in ranking %}
+              {% if forloop.counter < 4 %}
+                <div class="set">{{forloop.counter}} <p class="set_1">: {{user_friend.friend}} {{user_friend.score}}</p></div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+      </div>  
+      <div class="post box">
+        <h2>Collected Data Information</h2><br>
+        <div class="set">Total User Posts <p class="set_1">: {{user_post_num}}</p></div>
+        <div class="set">Total User Comments <p class="set_1">: {{user_comment_num}}</p></div>
+        <div class="set">Total Friend Posts <p class="set_1">: {{friend_post_num}}</p></div>
+        <div class="set">Total Friend Comments <p class="set_1">: {{friend_comment_num}}</p></div>
+      </div>  
+    </div>
+  </div>
+  
+  <div class="split right">
+    <div class="centered">
+      <div class="user_chart">
+        <div>
+
+          <div class='barcontainer'>
+            <div class='barcontainerheader'>
+              User's Posts and Comments
+            </div>
+            <!--'height:{{onlineHate_percen}}'-->
+            {% if onlineHate_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav()">
+            {% else %}
+              <div class='bar' style='height:{{onlineHate_score_percen}}' onclick="openNav()">
+            {% endif %}
+              {{onlineHate_score}}<br>
+              {{onlineHate_percen}}
+              <div class='barlabel'>
+                Online Hate
+              </div>
+            </div>
+
+            {% if racism_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_1()">
+            {% else %}
+              <div class='bar' style='height:{{racism_score_percen}}' onclick="openNav_1()">
+            {% endif %}
+              {{racism_score}}<br>
+              {{racism_percen}}
+              <div class='barlabel'>
+                Racism
+              </div>
+            </div>
+
+            {% if sexism_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_2()">
+            {% else %}
+              <div class='bar' style='height:{{sexism_score_percen}}' onclick="openNav_2()">
+            {% endif %}
+              {{sexism_score}}<br>
+              {{sexism_percen}}
+              <div class='barlabel'>
+                Sexism
+              </div>
+            </div>
+
+            {% if insult_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_3()">
+            {% else %}
+              <div class='bar' style='height:{{insult_score_percen}}' onclick="openNav_3()">
+            {% endif %}
+              {{insult_score}}<br>
+              {{insult_percen}}
+              <div class='barlabel'>
+                Insult
+              </div>
+            </div>
+
+            {% if obscene_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_4()">
+            {% else %}
+              <div class='bar' style='height:{{obscene_score_percen}}' onclick="openNav_4()">
+            {% endif %}
+              {{obscene_score}}<br>
+              {{obscene_percen}}
+              <div class='barlabel'>
+                Obscene
+              </div>
+            </div>
+
+            {% if toxic_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_5()">
+            {% else %}
+              <div class='bar' style='height:{{toxic_score_percen}}' onclick="openNav_5()">
+            {% endif %}
+              {{toxic_score}}<br>
+              {{toxic_percen}}
+              <div class='barlabel'>
+                Toxic
+              </div>
+            </div>
+
+            {% if normal_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_6()">
+            {% else %}
+              <div class='bar' style='height:{{normal_score_percen}}' onclick="openNav_6()">
+            {% endif %}
+              {{normal_score}}<br>
+              {{normal_percen}}
+              <div class='barlabel'>
+                Normal
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+        <div class="friend_chart">
+        <div>
+
+          <div class='barcontainer'>
+            <div class='barcontainerheader'>
+              Friends' Posts and Comments
+            </div>
+            <!--'height:{{onlineHate_percen}}'-->
+            {% if comment_onlineHate_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_A()">
+            {% else %}
+              <div class='bar' style='height:{{comment_onlineHate_score_percen}}' onclick="openNav_A()">
+            {% endif %}
+              {{comment_onlineHate_score}}<br>
+              {{comment_onlineHate_percen}}
+              <div class='barlabel'>
+                Online Hate
+              </div>
+            </div>
+
+            {% if comment_racism_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_B()">
+            {% else %}
+              <div class='bar' style='height:{{comment_racism_score_percen}}' onclick="openNav_B()">
+            {% endif %}
+              {{comment_racism_score}}<br>
+              {{comment_racism_percen}}
+              <div class='barlabel'>
+                Racism
+              </div>
+            </div>
+
+            {% if comment_sexism_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_C()">
+            {% else %}
+              <div class='bar' style='height:{{comment_sexism_score_percen}}' onclick="openNav_C()">
+            {% endif %}
+              {{comment_sexism_score}}<br>
+              {{comment_sexism_percen}}
+              <div class='barlabel'>
+                Sexism
+              </div>
+            </div>
+
+            {% if comment_insult_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_D()">
+            {% else %}
+              <div class='bar' style='height:{{comment_insult_score_percen}}' onclick="openNav_D()">
+            {% endif %}
+              {{comment_insult_score}}<br>
+              {{comment_insult_percen}}
+              <div class='barlabel'>
+                Insult
+              </div>
+            </div>
+
+            {% if comment_obscene_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_E()">
+            {% else %}
+              <div class='bar' style='height:{{comment_obscene_score_percen}}' onclick="openNav_E()">
+            {% endif %}
+              {{comment_obscene_score}}<br>
+              {{comment_obscene_percen}}
+              <div class='barlabel'>
+                Obscene
+              </div>
+            </div>
+
+            {% if comment_toxic_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_F()">
+            {% else %}
+              <div class='bar' style='height:{{comment_toxic_score_percen}}' onclick="openNav_F()">
+            {% endif %}
+              {{comment_toxic_score}}<br>
+              {{comment_toxic_percen}}
+              <div class='barlabel'>
+                Toxic
+              </div>
+            </div>
+
+            {% if comment_normal_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_G()">
+            {% else %}
+              <div class='bar' style='height:{{comment_normal_score_percen}}' onclick="openNav_G()">
+            {% endif %}
+              {{comment_normal_score}}<br>
+              {{comment_normal_percen}}
+              <div class='barlabel'>
+                Normal
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+
+<div class="profile box" id="profile" style="visibility: hidden; color:white;">
+  <div class="centered">
+    <div class="username space">
+    <form method="post" action="main">
+      {% csrf_token %}
+      <label class="username label" for="username">Username</label>
+      <input type="text" id="input username" class="username" name="profile_username" placeholder="Username" value="{{username}}" readonly>
+    </div>
+      <div class="password space">
+        <label class="password label" for="password">Password</label>
+        <input type="text" id="input password" class="password" name="profile_password" placeholder="Password" value="{{password}}" readonly>
+    </div>  
+      <div class="fb_name space">
+        <label class="fb_name label" for="fb_name">Facebook Name</label>
+        <input type="text" id="input fb_name" class="fb_name" name="profile_fb_name" placeholder="Facebook name" value="{{facebook_name}}">
+    </div> 
+    <div class="fb_email space">
+      <label class="fb_email label" for="fb_email">Facebook Email</label>
+        <input type="text" id="input fb_email" class="fb_email" name="profile_fb_email" placeholder="Facebook email" value="{{facebook_email}}">
+    </div>
+      <div class="fb_password space">
+        <label class="fb_password label" for="fb_password">Facebook Password</label>
+        <input type="text" id="input fb_password" class="fb_password" name="profile_fb_password" placeholder="Facebook password" value="{{facebook_password}}">
+    </div>  
+      <div class="fb_link space">
+        <label class="fb_link label" for="fb_link">Facebook Profile Link</label>
+        <input type="text" id="input fb_link" class="fb_link" name="profile_fb_link" placeholder="Facebook link" value="{{facebook_link}}">
+    </div>
+    <div class="edit_button space">
+      <p class="submit"><input type="submit" name="commit" value="Save change" onclick="SaveChange_function()"></p>
+    </div>
+    </form>
+      <div class="edit_button space">
+        <button class="default" onclick = "Default_function()">Reset to default</button>
+      </div>
+  </div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Online Hate</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "1" and onlineHate_content.post_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "1" and onlineHate_comment.comment_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_1" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Racism</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.racism == "1" and onlineHate_content.post_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.racism == "1" and onlineHate_comment.comment_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_2" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Sexism</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.sexism == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.sexism == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_3" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Insult</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.insult == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.insult == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_4" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Obscene</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.obscene == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.obscene == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_5" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Toxic</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.toxic == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.toxic == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_6" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Normal</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "0" and onlineHate_content.racism == "0"  and onlineHate_content.sexism == "0" and onlineHate_content.insult == "0" and onlineHate_content.obscene == "0" and onlineHate_content.toxic == "0" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "0" and onlineHate_comment.racism == "0"  and onlineHate_comment.sexism == "0" and onlineHate_comment.insult == "0" and onlineHate_comment.obscene == "0" and onlineHate_comment.toxic == "0" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_A" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Online Hate</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "1" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "1" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_B" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Racism</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.racism == "1" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.racism == "1" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_C" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Sexism</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.sexism == "1" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.sexism == "1" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_D" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Insult</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.insult == "1" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.insult == "1" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_E" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Obscene</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.obscene == "1" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.obscene == "1" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_F" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Toxic</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.toxic == "1" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.toxic == "1" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_G" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Normal</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "0" and onlineHate_content.racism == "0"  and onlineHate_content.sexism == "0" and onlineHate_content.insult == "0" and onlineHate_content.obscene == "0" and onlineHate_content.toxic == "0" and onlineHate_content.post_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "0" and onlineHate_comment.racism == "0"  and onlineHate_comment.sexism == "0" and onlineHate_comment.insult == "0" and onlineHate_comment.obscene == "0" and onlineHate_comment.toxic == "0" and onlineHate_comment.comment_user != user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+  <script>
+  // Used to toggle the menu on small screens when clicking on the menu button
+  function Profile_function() {
+    document.getElementById("profile").style.visibility = "visible";
+    document.getElementById("main").style.visibility = "hidden";
+  }
+
+  function Main_function() {
+    document.getElementById("profile").style.visibility = "hidden";
+    document.getElementById("main").style.visibility = "visible";
+  }
+
+  function Default_function(){
+    document.getElementById("input username").value = "{{username}}";
+    document.getElementById("input password").value = "{{password}}";
+    document.getElementById("input fb_name").value = "{{facebook_name}}";
+    document.getElementById("input fb_email").value = "{{facebook_email}}";
+    document.getElementById("input fb_password").value = "{{facebook_password}}";
+    document.getElementById("input fb_link").value = "{{facebook_link}}";
+    alert("Your information has been reset to default !");
+  }
+
+  function SaveChange_function(){
+    alert("Your information has been saved ! ");
+  }
+
+  function openNav() { 
+    document.getElementById("mySidebar").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_1() { 
+    document.getElementById("mySidebar_1").style.width = "600px";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_2() { 
+    document.getElementById("mySidebar_2").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_3() { 
+    document.getElementById("mySidebar_3").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_4() { 
+    document.getElementById("mySidebar_4").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_5() { 
+    document.getElementById("mySidebar_5").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_6() { 
+    document.getElementById("mySidebar_6").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_A() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "600px";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_B() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "600px";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_C() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "600px";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_D() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "600px";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_E() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "600px";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_F() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "600px";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+
+  function openNav_G() { 
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "600px";
+  }
+  
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+    document.getElementById("mySidebar_A").style.width = "0";
+    document.getElementById("mySidebar_B").style.width = "0";
+    document.getElementById("mySidebar_C").style.width = "0";
+    document.getElementById("mySidebar_D").style.width = "0";
+    document.getElementById("mySidebar_E").style.width = "0";
+    document.getElementById("mySidebar_F").style.width = "0";
+    document.getElementById("mySidebar_G").style.width = "0";
+  }
+  </script>
+  {% endblock %}
+</body>
+</html>
+
+<!--<div style="width: 300px;margin: auto;">
+          <meter id="meter_item" min="0" value="30" max="100" ></meter>
+          <ul id="scale">
+          <li style="width: 5%"><span></span></li>
+          <li><span id="scale">😃</span></li>
+          <li><span id="scale">😐</span></li>
+          <li><span id="scale">😠</span></li>
+          <li><span id="scale">😡</span></li>
+          <li style="width: 5%"><span id="scale"><span></span></li>
+          </ul>
+        </div>-->
+        <br>
+        <div class="progress" style="width: 300px;margin: auto;">
+            {% if scale_range <= 20 %}
+            <div class="progress-bar progress-bar-success" role="progressbar" style="width:25%">Safe</div>
+            {% elif scale_range <= 40 %}
+            <div class="progress-bar progress-bar-warning" role="progressbar" style="width:20%">Warning</div>
+            {% elif scale_range <= 60 %}
+            <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">Danger</div>
+            {% endif %}
+        </div>
+        
+        <ul id="scale" >
+          <li style="width: 25%"></li>
+          <li><span id="scale">😃</span></li>
+          <li><span id="scale">😐</span></li>
+          <li><span id="scale">😡</span></li>
+          <li style="width: 25%"><span id="scale"></li>
+          </ul>

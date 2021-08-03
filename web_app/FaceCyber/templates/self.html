@@ -1,0 +1,1588 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'css/accounts_style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<title>FaceCyber Cyber-Aggression</title>
+</head>
+
+<body style="background-image:url('{%static 'image/1.jpg' %}');overflow: auto;">
+  {% block content %}
+<!-- Navbar -->
+<div class="w3-top">
+    <div class="w3-bar w3-light-grey w3-card w3-large">
+      <a class="w3-bar-item w3-padding-large">FaceCyber</a>
+      <a href="/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">Logout</a>
+      <form action="profile" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="profile_input" value="{{username}}">
+        <button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right" type='submit'>Profile</button>
+     </form>
+      <form action="friend" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="friend_input" value="{{username}}">
+        <button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right" type='submit'>Friends</button>
+     </form>
+     <form action="self" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="self_input" value="{{username}}">
+        <button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right" type='submit'>Self</button>
+     </form>
+      <a class="w3-bar-item w3-padding-large w3-right">Welcome {{username}}</a>
+    </div>
+</div>
+  <div class="main box" id="main" style="color:white;">
+  <!-- Header -->
+  <div class="split left">
+    <div class="centered">
+      <div class="self_bully box">
+        <h5 class="set">Facebook Username </h5>
+        {% if facebook_name %}
+        <p class="set_1">{{facebook_name}}</p>
+        {% else %}
+        <p class="set_1">[Empty]</p>
+        {% endif %}
+        <h5 class="set">Bully Score </h5>
+        <p class="set_1">{{real_bully_score}}%</p><br>
+        <div style="width: 300px;margin: auto;">
+          <span style="margin-left:70px;margin-right:50px;">Bully Scale</span>
+            {% if real_bully_score <= 20 %}
+            <span style="float:left">0%</span>
+              <span style="float:right">100%</span>
+            <div class="w3-light-grey w3-round" style="margin-left:13px;margin-right:13px;">
+              <div class="w3-green w3-round w3-center"  style="width:{{real_bully_score_percen}}"><strong style="color:darkgreen">Safe</strong></div>
+            </div>
+              {% elif real_bully_score <= 40 %}
+              <span style="float:left">0%</span>
+              <span style="float:right">100%</span>
+              <div class="w3-light-grey w3-round" style="margin-left:13px;margin-right:13px;">
+                <div class="w3-yellow w3-round w3-center" style="width:{{real_bully_score_percen}}"><strong style="color:rgb(141, 141, 10)">Normal</strong></div>
+              </div>
+              {% elif real_bully_score <= 60 %}
+              <span style="float:left">0%</span>
+              <span style="float:right">100%</span>
+              <div class="w3-light-grey w3-round" style="margin-left:13px;margin-right:13px;">
+                <div class="w3-orange w3-center" style="width:{{real_bully_score_percen}}"><strong style="color:rgb(139, 79, 4)">Warning</strong></div>
+              </div>
+              {% elif real_bully_score <= 80 %}
+              <span style="float:left">0%</span>
+              <span style="float:right">100%</span>
+              <div class="w3-light-grey w3-round" style="margin-left:13px;margin-right:13px;">
+                <div class="w3-pink w3-round w3-center" style="width:{{real_bully_score_percen}}"><strong style="color:purple">Serious</strong></div>
+              </div>
+              {% else %}
+              <span style="float:left">0%</span>
+              <span style="float:right">100%</span>
+              <div class="w3-light-grey w3-round" style="margin-left:13px;margin-right:13px;">
+                <div class="w3-red w3-round w3-center" style="width:{{real_bully_score_percen}}"><strong style="color:darkred">Danger</strong></div>
+              </div>
+              {% endif %}
+          <ul id="scale">
+          <li style="display: inline;float:left"><span id="scale" style="font-size:x-large;">😃</span></li>
+          <li style="display: inline-block;margin-left:13px;margin-right:13px;"><span id="scale" style="font-size:x-large;">🙂</span></li>
+          <li style="display: inline-block;margin-left:13px;margin-right:13px;"><span id="scale" style="font-size:x-large;">😐</span></li>
+          <li style="display: inline-block;margin-left:13px;margin-right:13px;"><span id="scale" style="font-size:x-large;">😠</span></li>
+          <li style="display: inline-block;margin-left:13px;margin-right:13px;"><span id="scale" style="font-size:x-large;">😡</span></li>
+          <li style="display: inline;float:right"><span id="scale" style="font-size:x-large;">👿</span></li>
+          </ul>
+        </div>
+        <p class="set_1">
+          {% if real_bully_score <= 20 %}
+            You are doing great ! <br>
+            Please continue and keep positive attitudes on Facebook.
+          {% elif real_bully_score <= 40 %}
+            Maybe you are hurting someone even you might not notice it. <br>
+            Please keep on mind what you posted on Facebook.
+          {% elif real_bully_score <= 60 %}
+            Please be considerate to others ! <br>
+            You do not know how serious of posting aggressive contents until someone hurts.
+          {% elif real_bully_score <= 80 %}
+            You are cyber-aggressor ! <br>
+            Please stop hurting others online !
+          {% else %}
+            You are serious cyber-aggressor ! <br>
+            Please stop hurting others online !
+            
+          {% endif %}
+        </p>
+      </div>
+      <div class="self_post box">
+        <h6 class="set">Total User Posts </h6>
+          <p class="set_1">{{user_post_number}}</p>
+        <h6 class="set">Total User Comments </h6>
+        <p class="set_1">{{user_comment_number}}</p>
+        <h6 class="set">Chart Statistic</h6>
+        <select name="Filter" id="chart_filter" onchange="change()">
+          <option selected hidden style="display:none">Select Type</option>
+          <option value="Overall">Overall</option>
+          <option value="Post">Posts</option>
+          <option value="Comment">Comments</option>
+        </select>
+        <br><br>
+        <div>
+        <div id="donutchart" style="width: 100%; height: 180px;"></div>
+        </div>
+      </div>  
+    </div>
+  </div>
+  
+  <div class="split right">
+    <div class="centered">
+      <div class="user_chart">
+        <div>
+
+          <div class='barcontainer'>
+            <div class='barcontainerheader'>
+              User's Posts and Comments
+            </div>
+            <div style="margin-top:40px;margin-bottom:2px;text-align:left;">
+              <button type="button" id="button_1" style="font-size:10px;" onclick="open_statistic()" style="display: inline;">Statistic <i style="font-size:x-large;top:5px;position:relative"class="material-icons">insert_chart</i></button>
+              <button type="button" id="button_2" style="font-size:10px;" onclick="open_filter()" style="display: inline;">Messages <i style="font-size:x-large;top:5px;position:relative"class="material-icons">chat</i></button>
+            </div>
+            <div id="self_bar_container" style="">
+            <div id = "bar_control_div" style="text-align:left;">
+              <strong>Statistic Filter</strong>
+            <select name="Filter" id="bar_filter" onchange="bar_change()" style="display: inline;">
+              <option selected hidden style="display:none">Select Type</option>
+              <option value="Overall">Overall</option>
+              <option value="Post">Posts</option>
+              <option value="Comment">Comments</option>
+            </select>
+            <div style="display: inline;">
+              <input type="checkbox" id="check_1" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Online Hate</label>
+              <input type="checkbox" id="check_2" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Racism</label>
+              <input type="checkbox" id="check_3" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Sexism</label>
+              <input type="checkbox" id="check_4" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Insult</label>
+              <input type="checkbox" id="check_5" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Obscene</label>
+              <input type="checkbox" id="check_6" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Toxic</label>
+              <input type="checkbox" id="check_7" class="checkboxes" checked onchange="bar_change()">
+              <label for="scales">Normal</label>
+            </div>
+          </div>
+            <div id="self_bar" style="">
+            <!--{% if onlineHate_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav()">
+            {% else %}
+              <div class='bar' style='height:{{onlineHate_score_percen}}' onclick="openNav()">
+            {% endif %}
+              {{onlineHate_score}}<br>
+              {{onlineHate_percen}}
+              <div class='barlabel'>
+                Online Hate
+              </div>
+            </div>
+
+            {% if racism_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_1()">
+            {% else %}
+              <div class='bar' style='height:{{racism_score_percen}}' onclick="openNav_1()">
+            {% endif %}
+              {{racism_score}}<br>
+              {{racism_percen}}
+              <div class='barlabel'>
+                Racism
+              </div>
+            </div>
+
+            {% if sexism_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_2()">
+            {% else %}
+              <div class='bar' style='height:{{sexism_score_percen}}' onclick="openNav_2()">
+            {% endif %}
+              {{sexism_score}}<br>
+              {{sexism_percen}}
+              <div class='barlabel'>
+                Sexism
+              </div>
+            </div>
+
+            {% if insult_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_3()">
+            {% else %}
+              <div class='bar' style='height:{{insult_score_percen}}' onclick="openNav_3()">
+            {% endif %}
+              {{insult_score}}<br>
+              {{insult_percen}}
+              <div class='barlabel'>
+                Insult
+              </div>
+            </div>
+
+            {% if obscene_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_4()">
+            {% else %}
+              <div class='bar' style='height:{{obscene_score_percen}}' onclick="openNav_4()">
+            {% endif %}
+              {{obscene_score}}<br>
+              {{obscene_percen}}
+              <div class='barlabel'>
+                Obscene
+              </div>
+            </div>
+
+            {% if toxic_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_5()">
+            {% else %}
+              <div class='bar' style='height:{{toxic_score_percen}}' onclick="openNav_5()">
+            {% endif %}
+              {{toxic_score}}<br>
+              {{toxic_percen}}
+              <div class='barlabel'>
+                Toxic
+              </div>
+            </div>
+
+            {% if normal_score <= 20 %}
+              <div class='bar' style='height:20%' onclick="openNav_6()">
+            {% else %}
+              <div class='bar' style='height:{{normal_score_percen}}' onclick="openNav_6()">
+            {% endif %}
+              {{normal_score}}<br>
+              {{normal_percen}}
+              <div class='barlabel'>
+                Normal
+              </div>
+            </div>-->
+          </div> <!--self_bar-->
+        </div> <!--end self bar container-->
+        <div id="self_filter_container" style="display:none;">
+          <div style="text-align:left;">
+            <strong>  Messages Filter</strong>
+            <select name="Filter" id="content_filter" onchange="">
+              <option selected hidden style="display:none">Select Type</option>
+              <option value="All">All</option>
+              <option value="Post">Posts</option>
+              <option value="Comment">Comments</option>
+            </select>
+            <div style="display: inline;">
+              <input type="checkbox" id="content_check_1" class="checkboxes" checked onchange="">
+              <label for="scales">Online Hate</label>
+              <input type="checkbox" id="content_check_2" class="checkboxes" checked onchange="">
+              <label for="scales">Racism</label>
+              <input type="checkbox" id="content_check_3" class="checkboxes" checked onchange="">
+              <label for="scales">Sexism</label>
+              <input type="checkbox" id="content_check_4" class="checkboxes" checked onchange="">
+              <label for="scales">Insult</label>
+              <input type="checkbox" id="content_check_5" class="checkboxes" checked onchange="">
+              <label for="scales">Obscene</label>
+              <input type="checkbox" id="content_check_6" class="checkboxes" checked onchange="">
+              <label for="scales">Toxic</label>
+              <input type="checkbox" id="content_check_7" class="checkboxes" checked onchange="">
+              <label for="scales">Normal</label>
+            </div>
+            <button id="button_filter" type="button" onclick="run_content_filter()" style="display: inline;">Search</button>
+          </div> <!--end control-->
+          <div id="content_container" style="width:100%;height:600px;">
+            <div id="content_container_2" class="" style="background-color:bisque;height:550px;overflow: auto;">
+                
+            </div>
+          </div>
+        </div> <!--self filter container-->
+          </div> <!--end container-->
+
+        </div> <!--empty div-->
+      </div> <!--userchart-->
+    </div> <!--center-->
+  </div><!--right-->
+</div>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Online Hate</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "1" and onlineHate_content.post_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "1" and onlineHate_comment.comment_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_1" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Racism</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.racism == "1" and onlineHate_content.post_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.racism == "1" and onlineHate_comment.comment_user == user_fb_name %}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_2" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Sexism</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.sexism == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.sexism == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_3" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Insult</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.insult == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.insult == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_4" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Obscene</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.obscene == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.obscene == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_5" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Toxic</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.toxic == "1" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.toxic == "1" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+<div id="mySidebar_6" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a style="color:white;">Normal</a>
+    <a style="color:rgb(231, 146, 17);">Post</a>
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "0" and onlineHate_content.racism == "0"  and onlineHate_content.sexism == "0" and onlineHate_content.insult == "0" and onlineHate_content.obscene == "0" and onlineHate_content.toxic == "0" and onlineHate_content.post_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_content.post_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_content.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+    <a style="color:rgb(231, 146, 17);">Comment</a>
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "0" and onlineHate_comment.racism == "0"  and onlineHate_comment.sexism == "0" and onlineHate_comment.insult == "0" and onlineHate_comment.obscene == "0" and onlineHate_comment.toxic == "0" and onlineHate_comment.comment_user == user_fb_name%}
+      <div id="sideContent">
+        <a style="color:blanchedalmond;">{{onlineHate_comment.comment_user}}</a>
+        <a style="color:blanchedalmond;">{{onlineHate_comment.content}}</a>
+      </div><br>
+      {% endif %}
+    {% endfor %}
+</div>
+
+  <script>
+  // Used to toggle the menu on small screens when clicking on the menu button
+
+  function openNav() { 
+    document.getElementById("mySidebar").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function openNav_1() { 
+    document.getElementById("mySidebar_1").style.width = "600px";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function openNav_2() { 
+    document.getElementById("mySidebar_2").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function openNav_3() { 
+    document.getElementById("mySidebar_3").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function openNav_4() { 
+    document.getElementById("mySidebar_4").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function openNav_5() { 
+    document.getElementById("mySidebar_5").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function openNav_6() { 
+    document.getElementById("mySidebar_6").style.width = "600px";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar").style.width = "0";
+  }
+  
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("mySidebar_1").style.width = "0";
+    document.getElementById("mySidebar_2").style.width = "0";
+    document.getElementById("mySidebar_3").style.width = "0";
+    document.getElementById("mySidebar_4").style.width = "0";
+    document.getElementById("mySidebar_5").style.width = "0";
+    document.getElementById("mySidebar_6").style.width = "0";
+  }
+
+  function open_statistic(){
+    document.getElementById("self_bar_container").style.display = "block";
+    document.getElementById("self_filter_container").style.display = "none";
+    document.getElementById("button_1").style.backgroundColor = "darkgrey";
+    document.getElementById("button_2").style.backgroundColor = "#e7e7e7";
+  }
+
+  function open_filter(){
+    document.getElementById("self_bar_container").style.display = "none";
+    document.getElementById("self_filter_container").style.display = "block";
+    document.getElementById("button_2").style.backgroundColor = "darkgrey";
+    document.getElementById("button_1").style.backgroundColor = "#e7e7e7";
+    var div_content = document.getElementById("content_container_2");
+    var content_label = ""
+    var content_count = 1;
+    var comment_count = 1;
+    div_content.innerHTML = "";
+    content_label += '<h4 style="color:#663399;"><strong>Contents</strong></h4>';
+    content_label += '<h5 style="color:black;"><strong>Posts</strong></h5>';
+    content_label += '<table id="sideContent">';
+    content_label += '<tr><th>No</th><th>Name</th><th>Content</th></tr>';
+    {% for onlineHate_content in post_content %}
+      {% if onlineHate_content.onlineHate == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.racism == "1"  and onlineHate_content.post_user == user_fb_name or onlineHate_content.sexism == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.insult == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.obscene == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.toxic == "1" and onlineHate_content.post_user == user_fb_name%}
+        content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+        content_count ++;      
+      {% elif onlineHate_content.onlineHate == "0" and onlineHate_content.racism == "0" and onlineHate_content.sexism == "0" and onlineHate_content.insult == "0" and onlineHate_content.obscene == "0" and onlineHate_content.toxic == "0" and onlineHate_content.post_user == user_fb_name %}
+        content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+        content_count ++;
+      {% endif %}
+    {% endfor %}
+    content_label += '</table><br>';
+    content_label += '<h5 style="color:black;"><strong>Comments</strong></h5>';
+    content_label += '<table id="sideContent">';
+    content_label += '<tr><th>No</th><th>Name</th><th>Content</th></tr>';
+    {% for onlineHate_comment in comment_content %}
+      {% if onlineHate_comment.onlineHate == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.racism == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.sexism == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.insult == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.obscene == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.toxic == "1" and onlineHate_comment.comment_user == user_fb_name%}
+        content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+        comment_count ++;
+      {% elif onlineHate_comment.onlineHate == "0" and onlineHate_comment.racism == "0" and onlineHate_comment.sexism == "0" and onlineHate_comment.insult == "0" and onlineHate_comment.obscene == "0" and onlineHate_comment.toxic == "0" and onlineHate_comment.comment_user == user_fb_name %}
+        content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+        comment_count ++;
+      {% endif %}
+    {% endfor %}
+    content_label += '</table><br>';
+    div_content.innerHTML = content_label;
+}
+
+  function run_content_filter(){
+    var content_select = document.getElementById("content_filter");
+    console.log(content_select.value);
+    const tick_1 = document.getElementById('content_check_1');
+    console.log("hate"+tick_1.checked);
+    const tick_2 = document.getElementById('content_check_2');
+    console.log("racism"+tick_2.checked);
+    const tick_3 = document.getElementById('content_check_3');
+    console.log("sexism"+tick_3.checked);
+    const tick_4 = document.getElementById('content_check_4');
+    console.log("insult"+tick_4.checked);
+    const tick_5 = document.getElementById('content_check_5');
+    console.log("obscene"+tick_5.checked);
+    const tick_6 = document.getElementById('content_check_6');
+    console.log("Toxic"+tick_6.checked);
+    const tick_7 = document.getElementById('content_check_7');
+    console.log("Normal"+tick_7.checked);
+    var div_content = document.getElementById("content_container_2");
+    var content_label = ""
+    var content_count = 1;
+    var comment_count = 1;
+    div_content.innerHTML = "";
+    var racism_tag, sexism_tag, insult_tag, obscene_tag, toxic_tag;
+    if (content_select.value == "Select Type" || content_select.value == "All" ){
+      content_label += '<h4 style="color:#663399;"><strong>Contents</strong></h4>';
+      content_label += '<h5 style="color:black;"><strong>Posts</strong></h5>';
+      content_label += '<table id="sideContent">';
+      content_label += '<tr><th>No</th><th>Name</th><th>Content</th></tr>';
+        {% for onlineHate_content in post_content %}
+          {% if onlineHate_content.onlineHate == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.racism == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.sexism == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.insult == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.obscene == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.toxic == "1" and onlineHate_content.post_user == user_fb_name%}
+            if(tick_1.checked){
+              if({{onlineHate_content.onlineHate}} == "1" ){
+                if({{onlineHate_content.racism}} == "1" ){
+                  racism_tag = 1;
+                }
+                if({{onlineHate_content.sexism}} == "1" ){
+                  sexism_tag = 1
+                }
+                if({{onlineHate_content.insult}} == "1" ){
+                  insult_tag = 1;
+                }
+                if({{onlineHate_content.obscene}} == "1" ){
+                  obscene_tag = 1;
+                }
+                if({{onlineHate_content.toxic}} == "1" ){
+                  toxic_tag = 1;
+                }
+                if({{onlineHate_content.onlineHate}} == "1" ){
+                  content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                  content_count ++; 
+                }
+              }
+            }
+            if(tick_2.checked){
+              if(racism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.racism}} == "1" ){
+                  if({{onlineHate_content.sexism}} == "1" ){
+                    sexism_tag = 1;
+                  }
+                  if({{onlineHate_content.insult}} == "1" ){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_content.obscene}} == "1" ){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_content.toxic}} == "1" ){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.racism}} == "1" ){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            if(tick_3.checked){
+              if(sexism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.sexism}} == "1"){
+                  if({{onlineHate_content.insult}} == "1"){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_content.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }       
+                  if({{onlineHate_content.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.sexism}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            if(tick_4.checked){
+              if(insult_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.insult}} == "1"){
+                  if({{onlineHate_content.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_content.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.insult}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }   
+            }
+            if(tick_5.checked){
+              if(obscene_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.obscene}} == "1"){
+                  if({{onlineHate_content.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.obscene}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            if(tick_6.checked){
+              if(toxic_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.toxic}} == "1"){
+                  if({{onlineHate_content.toxic}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            racism_tag =0;
+            sexism_tag =0;
+            insult_tag =0;
+            obscene_tag =0;
+            toxic_tag =0;
+          {% elif onlineHate_content.onlineHate == "0" and onlineHate_content.racism == "0" and onlineHate_content.sexism == "0" and onlineHate_content.insult == "0" and onlineHate_content.obscene == "0" and onlineHate_content.toxic == "0" and onlineHate_content.post_user == user_fb_name %}
+            if(tick_7.checked){
+              content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+              content_count ++; 
+            }
+          {% endif %}
+        {% endfor %}
+        content_label += '</table><br>';
+        content_label += '<h5 style="color:black;"><strong>Comments</strong></h5>';
+        content_label += '<table id="sideContent">';
+        content_label += '<tr><th>No</th><th>Name</th><th>Content</th></tr>';
+        {% for onlineHate_comment in comment_content %}
+          {% if onlineHate_comment.onlineHate == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.racism == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.sexism == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.insult == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.obscene == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.toxic == "1" and onlineHate_comment.comment_user == user_fb_name%}
+            if(tick_1.checked){
+              if({{onlineHate_comment.onlineHate}} == "1" ){
+                if({{onlineHate_comment.racism}} == "1" ){
+                  racism_tag = 1;
+                }
+                if({{onlineHate_comment.sexism}} == "1" ){
+                  sexism_tag = 1
+                }
+                if({{onlineHate_comment.insult}} == "1" ){
+                  insult_tag = 1;
+                }
+                if({{onlineHate_comment.obscene}} == "1" ){
+                  obscene_tag = 1;
+                }
+                if({{onlineHate_comment.toxic}} == "1" ){
+                  toxic_tag = 1;
+                }
+                if({{onlineHate_comment.onlineHate}} == "1" ){
+                  content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                  comment_count ++;
+                }
+              }
+            }
+            if(tick_2.checked){
+              if(racism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.racism}} == "1" ){
+                  if({{onlineHate_comment.sexism}} == "1" ){
+                    sexism_tag = 1;
+                  }
+                  if({{onlineHate_comment.insult}} == "1" ){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_comment.obscene}} == "1" ){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_comment.toxic}} == "1" ){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.racism}} == "1" ){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            if(tick_3.checked){
+              if(sexism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.sexism}} == "1"){
+                  if({{onlineHate_comment.insult}} == "1"){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_comment.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }       
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.sexism}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            if(tick_4.checked){
+              if(insult_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.insult}} == "1"){
+                  if({{onlineHate_comment.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.insult}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }   
+            }
+            if(tick_5.checked){
+              if(obscene_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.obscene}} == "1"){
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.obscene}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            if(tick_6.checked){
+              if(toxic_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.toxic}} == "1"){
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            racism_tag =0;
+            sexism_tag =0;
+            insult_tag =0;
+            obscene_tag =0;
+            toxic_tag =0;
+          {% elif onlineHate_comment.onlineHate == "0" and onlineHate_comment.racism == "0" and onlineHate_comment.sexism == "0" and onlineHate_comment.insult == "0" and onlineHate_comment.obscene == "0" and onlineHate_comment.toxic == "0" and onlineHate_comment.comment_user == user_fb_name %}
+            if(tick_7.checked){
+              content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+              comment_count ++;
+            }
+          {% endif %}
+        {% endfor %}
+        content_label += '</table><br>';
+    }
+    else if(content_select.value == "Post"){
+      content_label += '<h4 style="color:#663399;"><strong>Contents</strong></h4>';
+      content_label += '<h5 style="color:black;"><strong>Posts</strong></h5>';
+      content_label += '<table id="sideContent">';
+      content_label += '<tr><th>No</th><th>Name</th><th>Content</th></tr>';
+        {% for onlineHate_content in post_content %}
+          {% if onlineHate_content.onlineHate == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.racism == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.sexism == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.insult == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.obscene == "1" and onlineHate_content.post_user == user_fb_name or onlineHate_content.toxic == "1" and onlineHate_content.post_user == user_fb_name%}
+            if(tick_1.checked){
+              if({{onlineHate_content.onlineHate}} == "1" ){
+                if({{onlineHate_content.racism}} == "1" ){
+                  racism_tag = 1;
+                }
+                if({{onlineHate_content.sexism}} == "1" ){
+                  sexism_tag = 1
+                }
+                if({{onlineHate_content.insult}} == "1" ){
+                  insult_tag = 1;
+                }
+                if({{onlineHate_content.obscene}} == "1" ){
+                  obscene_tag = 1;
+                }
+                if({{onlineHate_content.toxic}} == "1" ){
+                  toxic_tag = 1;
+                }
+                if({{onlineHate_content.onlineHate}} == "1" ){
+                  content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                  content_count ++; 
+                }
+              }
+            }
+            if(tick_2.checked){
+              if(racism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.racism}} == "1" ){
+                  if({{onlineHate_content.sexism}} == "1" ){
+                    sexism_tag = 1;
+                  }
+                  if({{onlineHate_content.insult}} == "1" ){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_content.obscene}} == "1" ){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_content.toxic}} == "1" ){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.racism}} == "1" ){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            if(tick_3.checked){
+              if(sexism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.sexism}} == "1"){
+                  if({{onlineHate_content.insult}} == "1"){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_content.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }       
+                  if({{onlineHate_content.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.sexism}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            if(tick_4.checked){
+              if(insult_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.insult}} == "1"){
+                  if({{onlineHate_content.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_content.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.insult}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }   
+            }
+            if(tick_5.checked){
+              if(obscene_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.obscene}} == "1"){
+                  if({{onlineHate_content.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_content.obscene}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            if(tick_6.checked){
+              if(toxic_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_content.toxic}} == "1"){
+                  if({{onlineHate_content.toxic}} == "1"){
+                    content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+                    content_count ++; 
+                  }
+                }
+              }
+            }
+            racism_tag =0;
+            sexism_tag =0;
+            insult_tag =0;
+            obscene_tag =0;
+            toxic_tag =0;
+          {% elif onlineHate_content.onlineHate == "0" and onlineHate_content.racism == "0" and onlineHate_content.sexism == "0" and onlineHate_content.insult == "0" and onlineHate_content.obscene == "0" and onlineHate_content.toxic == "0" and onlineHate_content.post_user == user_fb_name %}
+            if(tick_7.checked){
+              content_label += '<tr><td>'+content_count+'</td><td>{{onlineHate_content.post_user}}</td><td>{{onlineHate_content.content}}</td></tr>';
+              content_count ++;
+            }
+          {% endif %}
+        {% endfor %}
+        content_label += '</table><br>';
+    }
+    else if(content_select.value == "Comment"){
+      content_label += '<h4 style="color:#663399;"><strong>Contents</strong></h4>';
+      content_label += '<h5 style="color:black;"><strong>Comments</strong></h5>';
+      content_label += '<table id="sideContent">';
+      content_label += '<tr><th>No</th><th>Name</th><th>Content</th></tr>';
+        {% for onlineHate_comment in comment_content %}
+          {% if onlineHate_comment.onlineHate == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.racism == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.sexism == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.insult == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.obscene == "1" and onlineHate_comment.comment_user == user_fb_name or onlineHate_comment.toxic == "1" and onlineHate_comment.comment_user == user_fb_name%}
+            if(tick_1.checked){
+              if({{onlineHate_comment.onlineHate}} == "1" ){
+                if({{onlineHate_comment.racism}} == "1" ){
+                  racism_tag = 1;
+                }
+                if({{onlineHate_comment.sexism}} == "1" ){
+                  sexism_tag = 1
+                }
+                if({{onlineHate_comment.insult}} == "1" ){
+                  insult_tag = 1;
+                }
+                if({{onlineHate_comment.obscene}} == "1" ){
+                  obscene_tag = 1;
+                }
+                if({{onlineHate_comment.toxic}} == "1" ){
+                  toxic_tag = 1;
+                }
+                if({{onlineHate_comment.onlineHate}} == "1" ){
+                  content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                  comment_count ++;
+                }
+              }
+            }
+            if(tick_2.checked){
+              if(racism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.racism}} == "1" ){
+                  if({{onlineHate_comment.sexism}} == "1" ){
+                    sexism_tag = 1;
+                  }
+                  if({{onlineHate_comment.insult}} == "1" ){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_comment.obscene}} == "1" ){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_comment.toxic}} == "1" ){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.racism}} == "1" ){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            if(tick_3.checked){
+              if(sexism_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.sexism}} == "1"){
+                  if({{onlineHate_comment.insult}} == "1"){
+                    insult_tag = 1;
+                  }
+                  if({{onlineHate_comment.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }       
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.sexism}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            if(tick_4.checked){
+              if(insult_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.insult}} == "1"){
+                  if({{onlineHate_comment.obscene}} == "1"){
+                    obscene_tag = 1;
+                  }
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.insult}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }   
+            }
+            if(tick_5.checked){
+              if(obscene_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.obscene}} == "1"){
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    toxic_tag = 1;
+                  }
+                  if({{onlineHate_comment.obscene}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            if(tick_6.checked){
+              if(toxic_tag == 1){
+                //nothing
+              }
+              else{
+                if({{onlineHate_comment.toxic}} == "1"){
+                  if({{onlineHate_comment.toxic}} == "1"){
+                    content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+                    comment_count ++;
+                  }
+                }
+              }
+            }
+            racism_tag =0;
+            sexism_tag =0;
+            insult_tag =0;
+            obscene_tag =0;
+            toxic_tag =0;
+          {% elif onlineHate_comment.onlineHate == "0" and onlineHate_comment.racism == "0" and onlineHate_comment.sexism == "0" and onlineHate_comment.insult == "0" and onlineHate_comment.obscene == "0" and onlineHate_comment.toxic == "0" and onlineHate_comment.comment_user == user_fb_name %}
+            if(tick_7.checked){
+              content_label += '<tr><td>'+comment_count+'</td><td>{{onlineHate_comment.comment_user}}</td><td>{{onlineHate_comment.content}}</td></tr>';
+              comment_count ++;
+            }
+          {% endif %}
+        {% endfor %}
+        content_label += '</table><br>';
+    }
+    div_content.innerHTML = content_label;
+  }
+  </script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Content', 'Total Number'],
+        ['Aggressive Contents', {{total_user_toxic}}],
+        ['Non-Aggressive Contents', {{normal_score}}]
+        ]);
+
+        var options = {
+          'title':'Overall',
+          titleTextStyle: {
+            color: 'white',
+            fontName: 'Arial',
+            fontSize: 15
+          },
+          'height':'100%',
+          'width':'100%',
+          pieHole: 0.4,
+          'backgroundColor': 'transparent',
+          chartArea:{left:110,bottom:40,width:"100%",height:"80%"},
+          legend: { textStyle: {color: 'white'},position: 'right', alignment: 'start' },
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+        // initial value
+        /*var percent = 0;
+        // start the animation loop
+        var handler = setInterval(function(){
+        // values increment
+        percent += 1;
+        // apply new values
+        data.setValue(1, 1, percent);
+        data.setValue(0, 1, {{total_user_toxic}} + {{normal_score}} - percent);
+        // update the pie
+        chart.draw(data, options);
+        // check if we have reached the desired value
+        if (percent >= {{normal_score}})
+        // stop the loop
+          clearInterval(handler);
+        }, 30);*/
+      }
+
+      function change(){
+      var listbox = document.getElementById("chart_filter");
+      var selIndex = listbox.selectedIndex;
+      var selValue = listbox.options[selIndex].value;
+      console.log(selValue);
+      google.charts.setOnLoadCallback(drawChart_1);
+
+      function drawChart_1(){
+        var data_overall = google.visualization.arrayToDataTable([
+        ['Number', 'Total Number'],
+        ['Aggressive Contents', {{total_user_toxic}}],
+        ['Non-Aggressive Contents', {{normal_score}}]
+      ]);
+
+      var data_post = google.visualization.arrayToDataTable([
+        ['Number', 'Total Number'],
+        ['Aggressive Posts', {{total_user_toxic_post}}],
+        ['Non-aggressive Posts', {{user_non_toxic_post}}]
+      ]);
+
+      var data_comment = google.visualization.arrayToDataTable([
+        ['Number', 'Total Number'],
+        ['Aggressive Comments', {{total_user_toxic_comment}}],
+        ['Non-aggressive Comments', {{user_non_toxic_comment}}]
+      ]);
+
+      var options_overall = {
+        'title':'Overall',
+        titleTextStyle: {
+          color: 'white',
+          fontName: 'Arial',
+          fontSize: 15
+        },
+        'height':'100%',
+        'width':'100%',
+        pieHole: 0.4,
+        'backgroundColor': 'transparent',
+        chartArea:{left:110,bottom:40,width:"100%",height:"80%"},
+        legend: { textStyle: {color: 'white'},position: 'right', alignment: 'start' },
+      };
+
+      var options_post = {
+        'title':'Posts',
+        titleTextStyle: {
+          color: 'white',
+          fontName: 'Arial',
+          fontSize: 15
+        },
+        'height':'100%',
+        'width':'100%',
+        pieHole: 0.4,
+        'backgroundColor': 'transparent',
+        chartArea:{left:110,bottom:40,width:"100%",height:"80%"},
+        legend: { textStyle: {color: 'white'},position: 'right', alignment: 'start' },
+      };
+
+      var options_comment = {
+        'title':'Comments',
+        titleTextStyle: {
+          color: 'white',
+          fontName: 'Arial',
+          fontSize: 15
+        },
+        'height':'100%',
+        'width':'100%',
+        pieHole: 0.4,
+        'backgroundColor': 'transparent',
+        chartArea:{left:110,bottom:40,width:"100%",height:"80%"},
+        legend: { textStyle: {color: 'white'},position: 'right', alignment: 'start' },
+      };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        if (selValue == 'Overall') {
+          chart.draw(data_overall, options_overall);
+          /*var percent = 0;
+          var handler = setInterval(function(){
+          percent += 1;
+          data_overall.setValue(1, 1, percent);
+          data_overall.setValue(0, 1, {{total_user_toxic}} + {{normal_score}} - percent);
+          chart.draw(data_overall, options_overall);
+          if (percent >= {{normal_score}})
+            clearInterval(handler);
+          }, 30);*/
+        }
+        else if (selValue == 'Post') {
+          chart.draw(data_post, options_post);
+          /*var percent = 0;
+          var handler = setInterval(function(){
+          percent += 1;
+          data_post.setValue(1, 1, percent);
+          data_post.setValue(0, 1, {{total_user_toxic_post}} + {{user_non_toxic_post}} - percent);
+          chart.draw(data_post, options_post);
+          if (percent >= {{user_non_toxic_post}})
+            clearInterval(handler);
+          }, 30);*/
+        }
+        else if (selValue == 'Comment') {
+          chart.draw(data_comment, options_comment);
+          /*var percent = 0;
+          var handler = setInterval(function(){
+          percent += 1;
+          data_comment.setValue(1, 1, percent);
+          data_comment.setValue(0, 1, {{total_user_toxic_comment}} + {{user_non_toxic_comment}} - percent);
+          chart.draw(data_comment, options_comment);
+          if (percent >= {{user_non_toxic_comment}})
+            clearInterval(handler);
+          }, 30);*/
+        }
+        
+      }//end draw table
+    }//end onchange
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table, 
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Labels');
+        data.addColumn('number', 'Posts');
+        data.addColumn({type: 'string', role: 'annotation'});
+        data.addColumn({type: 'string', role: 'tooltip'});
+        data.addColumn('number', 'Comments');
+        data.addColumn({type: 'string', role: 'annotation'});
+        data.addColumn({type: 'string', role: 'tooltip'});
+        data.addRows([
+          ["Online Hate",{{user_post_onlineHate}},"{{user_post_onlineHate}}","Online Hate\nPosts:{{user_post_onlineHate}}",{{user_comment_onlineHate}},"{{user_comment_onlineHate}}","Online Hate\nComments:{{user_comment_onlineHate}}"],
+          ["Racism", {{user_post_racism}},"{{user_post_racism}}","Racism\nPosts:{{user_post_racism}}",{{user_comment_racism}},"{{user_comment_racism}}","Racism\nComments:{{user_comment_racism}}"],
+          ["Sexism", {{user_post_sexism}},"{{user_post_sexism}}","Sexism\nPosts:{{user_post_sexism}}",{{user_comment_sexism}},"{{user_comment_sexism}}","Sexism\nComments:{{user_comment_sexism}}"],
+          ["Insult", {{user_post_insult}},"{{user_post_insult}}","Insult\nPosts:{{user_post_insult}}",{{user_comment_insult}},"{{user_comment_insult}}","Insult\nComments:{{user_comment_insult}}"],
+          ["Obscene", {{user_post_obscene}},"{{user_post_obscene}}","Obscene\nPosts:{{user_post_obscene}}",{{user_comment_obscene}},"{{user_comment_obscene}}","Obscene\nComments:{{user_comment_obscene}}"],
+          ["Toxic", {{user_post_toxic}},"{{user_post_toxic}}","Toxic\nPosts:{{user_post_toxic}}",{{user_comment_toxic}},"{{user_comment_toxic}}","Toxic\nComments:{{user_comment_toxic}}"],
+          ["Normal", {{user_non_toxic_post}},"{{user_non_toxic_post}}","Normal\nPosts:{{user_non_toxic_post}}",{{user_non_toxic_comment}},"{{user_non_toxic_comment}}","Normal\nComments:{{user_non_toxic_comment}}"]
+        ]);
+
+      /*// Create the data table.
+      var data = google.visualization.arrayToDataTable([
+        ["Labels","Post",{role: 'annotation'},"Comment",{role: 'annotation'}],
+        ["Online Hate",{{onlineHate_score}},"{{onlineHate_score}}",10,"10"],
+        ["Racism", {{racism_score}},"{{racism_score}}",10,"10"],
+        ["Sexism", {{sexism_score}},"{{sexism_score}}",10,"10"],
+        ["Insult", {{insult_score}},"{{insult_score}}",10,"10"],
+        ["Obscene", {{obscene_score}},"{{obscene_score}}",10,"10"],
+        ["Toxic", {{toxic_score}},"{{toxic_score}}",10,"10"],
+        ["Normal", {{normal_score}},"{{normal_score}}",10,"10"]
+      ]);*/
+      /*var BarSelector = new google.visualization.ControlWrapper({
+        'controlType': 'CategoryFilter',
+        'containerId': 'bar_control_div',
+        'options': {
+          'filterColumnLabel': 'Cyber-aggression Labels',
+          "ui": {
+            "caption": "Choose a labels...",
+            "allowNone": False,
+            "allowMultiple": True,
+            "labelStacking":"horizontal"
+          } 
+        }
+      });*/
+
+      // Set chart options
+      var options = {'title':'Cyber-aggression Catergory',
+                      titleTextStyle: {
+                        color: 'white',
+                      },
+                     'width':950,
+                     'height':550,
+                     'backgroundColor': 'transparent',
+                     vAxis: {title: 'Counts',titleTextStyle : {bold: 'true',color: 'white'},textStyle:{color: 'white'},gridlines: {color: 'none'},format:'0'},
+                     hAxis: {title: 'Labels',titleTextStyle : {bold: 'true'},textStyle:{bold: 'true'},gridlines: {color: 'none'}},
+                     horizontalAlign: "center",
+                     chartArea:{bottom:"50",width:"70%",height:"90%"},
+                     isStacked: true,
+                     legend: { textStyle: {color: 'white'} }
+                    }
+                    
+      var chart = new google.visualization.ColumnChart(document.getElementById('self_bar'));
+      chart.draw(data, options);
+    }
+    function bar_change(){
+
+      var listbox = document.getElementById("bar_filter");
+      var selIndex = listbox.selectedIndex;
+      var selValue = listbox.options[selIndex].value;
+      console.log(selValue);
+      const tick_1 = document.getElementById('check_1');
+      console.log("hate"+tick_1.checked);
+      const tick_2 = document.getElementById('check_2');
+      console.log("racism"+tick_2.checked);
+      const tick_3 = document.getElementById('check_3');
+      console.log("sexism"+tick_3.checked);
+      const tick_4 = document.getElementById('check_4');
+      console.log("insult"+tick_4.checked);
+      const tick_5 = document.getElementById('check_5');
+      console.log("obscene"+tick_5.checked);
+      const tick_6 = document.getElementById('check_6');
+      console.log("Toxic"+tick_6.checked);
+      const tick_7 = document.getElementById('check_7');
+      console.log("Normal"+tick_7.checked);
+      var checkBoxes = document.getElementsByClassName( 'checkboxes' );
+      var isChecked = 0;
+          for (var i = 0; i < checkBoxes.length; i++) {
+              if ( ! checkBoxes[i].checked ) {
+                console.log(isChecked);
+                  isChecked +=1;
+              }
+          }
+          if ( isChecked == 6 ) {
+            for (var i = 0; i < checkBoxes.length; i++) {
+              if ( checkBoxes[i].checked ) {
+                console.log(checkBoxes[i]);
+                checkBoxes[i].disabled = true;
+              }
+          }
+          } 
+          else{
+            for (var i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].disabled = false;
+              }
+          }
+      google.charts.setOnLoadCallback(drawChart_2);
+
+      function drawChart_2() {
+
+        var data = new google.visualization.DataTable();
+
+        if(selValue == "Overall" || selValue == "Select Type"){
+          data.addColumn('string', 'Labels');
+          data.addColumn('number', 'Posts');
+          data.addColumn({type: 'string', role: 'annotation'});
+          data.addColumn({type: 'string', role: 'tooltip'});
+          data.addColumn('number', 'Comments');
+          data.addColumn({type: 'string', role: 'annotation'});
+          data.addColumn({type: 'string', role: 'tooltip'});
+          if(tick_1.checked){
+            data.addRow(["Online Hate",{{user_post_onlineHate}},"{{user_post_onlineHate}}","Online Hate\nPosts:{{user_post_onlineHate}}",{{user_comment_onlineHate}},"{{user_comment_onlineHate}}","Online Hate\nComments:{{user_comment_onlineHate}}"]);
+          }
+          if(tick_2.checked){
+            data.addRow(["Racism", {{user_post_racism}},"{{user_post_racism}}","Racism\nPosts:{{user_post_racism}}",{{user_comment_racism}},"{{user_comment_racism}}","Racism\nComments:{{user_comment_racism}}"]);
+          }
+          if(tick_3.checked){
+            data.addRow(["Sexism", {{user_post_sexism}},"{{user_post_sexism}}","Sexism\nPosts:{{user_post_sexism}}",{{user_comment_sexism}},"{{user_comment_sexism}}","Sexism\nComments:{{user_comment_sexism}}"]);
+          }
+          if(tick_4.checked){
+            data.addRow(["Insult", {{user_post_insult}},"{{user_post_insult}}","Insult\nPosts:{{user_post_insult}}",{{user_comment_insult}},"{{user_comment_insult}}","Insult\nComments:{{user_comment_insult}}"]);
+          }
+          if(tick_5.checked){
+            data.addRow(["Obscene", {{user_post_obscene}},"{{user_post_obscene}}","Obscene\nPosts:{{user_post_obscene}}",{{user_comment_obscene}},"{{user_comment_obscene}}","Obscene\nComments:{{user_comment_obscene}}"]);
+          }
+          if(tick_6.checked){
+            data.addRow(["Toxic", {{user_post_toxic}},"{{user_post_toxic}}","Toxic\nPosts:{{user_post_toxic}}",{{user_comment_toxic}},"{{user_comment_toxic}}","Toxic\nComments:{{user_comment_toxic}}"]);
+          }
+          if(tick_7.checked){
+            data.addRow(["Normal", {{user_non_toxic_post}},"{{user_non_toxic_post}}","Normal\nPosts:{{user_non_toxic_post}}",{{user_non_toxic_comment}},"{{user_non_toxic_comment}}","Normal\nComments:{{user_non_toxic_comment}}"]);
+          }
+        }
+        else if(selValue == "Post"){
+          data.addColumn('string', 'Labels');
+          data.addColumn('number', 'Posts');
+          data.addColumn({type: 'string', role: 'annotation'});
+          data.addColumn({type: 'string', role: 'tooltip'});
+          if(tick_1.checked){
+            data.addRow(["Online Hate",{{user_post_onlineHate}},"{{user_post_onlineHate}}","Online Hate\nPosts:{{user_post_onlineHate}}"]);
+          }
+          if(tick_2.checked){
+            data.addRow(["Racism", {{user_post_racism}},"{{user_post_racism}}","Racism\nPosts:{{user_post_racism}}"]);
+          }
+          if(tick_3.checked){
+            data.addRow(["Sexism", {{user_post_sexism}},"{{user_post_sexism}}","Sexism\nPosts:{{user_post_sexism}}"]);
+          }
+          if(tick_4.checked){
+            data.addRow(["Insult", {{user_post_insult}},"{{user_post_insult}}","Insult\nPosts:{{user_post_insult}}"]);
+          }
+          if(tick_5.checked){
+            data.addRow(["Obscene", {{user_post_obscene}},"{{user_post_obscene}}","Obscene\nPosts:{{user_post_obscene}}"]);
+          }
+          if(tick_6.checked){
+            data.addRow(["Toxic", {{user_post_toxic}},"{{user_post_toxic}}","Toxic\nPosts:{{user_post_toxic}}"]);
+          }
+          if(tick_7.checked){
+            data.addRow(["Normal", {{user_non_toxic_post}},"{{user_non_toxic_post}}","Normal\nPosts:{{user_non_toxic_post}}"]);
+          }
+        }
+        else if(selValue == "Comment"){
+          data.addColumn('string', 'Labels');
+          data.addColumn('number', 'Comments');
+          data.addColumn({type: 'string', role: 'annotation'});
+          data.addColumn({type: 'string', role: 'tooltip'});
+          //data.addColumn({ role: 'style' });
+          if(tick_1.checked){
+            data.addRow(["Online Hate",{{user_comment_onlineHate}},"{{user_comment_onlineHate}}","Online Hate\nComments:{{user_comment_onlineHate}}"]);
+          }
+          if(tick_2.checked){
+            data.addRow(["Racism", {{user_comment_racism}},"{{user_comment_racism}}","Racism\nComments:{{user_comment_racism}}"]);
+          }
+          if(tick_3.checked){
+            data.addRow(["Sexism", {{user_comment_sexism}},"{{user_comment_sexism}}","Sexism\nComments:{{user_comment_sexism}}"]);
+          }
+          if(tick_4.checked){
+            data.addRow(["Insult", {{user_comment_insult}},"{{user_comment_insult}}","Insult\nComments:{{user_comment_insult}}"]);
+          }
+          if(tick_5.checked){
+            data.addRow(["Obscene", {{user_comment_obscene}},"{{user_comment_obscene}}","Obscene\nComments:{{user_comment_obscene}}"]);
+          }
+          if(tick_6.checked){
+            data.addRow(["Toxic", {{user_comment_toxic}},"{{user_comment_toxic}}","Toxic\nComments:{{user_comment_toxic}}"]);
+          }
+          if(tick_7.checked){
+            data.addRow(["Normal", {{user_non_toxic_comment}},"{{user_non_toxic_comment}}","Normal\nComments:{{user_non_toxic_comment}}"]);
+          }
+        }
+
+      // Set chart options
+      var options = {'title':'Cyber-aggression Catergory',
+                      titleTextStyle: {
+                        color: 'white',
+                      },
+                      'width':950,
+                      'height':550,
+                     'backgroundColor': 'transparent',
+                     vAxis: {title: 'Counts',titleTextStyle : {bold: 'true',color: 'white'},textStyle:{color: 'white'},gridlines: {color: 'none'},format:'0'},
+                     hAxis: {title: 'Labels',titleTextStyle : {bold: 'true'},textStyle:{bold: 'true'},gridlines: {color: 'none'}},
+                     horizontalAlign: "center",
+                     chartArea:{bottom:"50",width:"70%",height:"90%"},
+                     isStacked: true,
+                     legend: { textStyle: {color: 'white'} }
+                    }
+
+      var options_orange = {'title':'Cyber-aggression Catergory',
+             titleTextStyle: {
+               color: 'white',
+             },
+             'width':950,
+             'height':550,
+            'backgroundColor': 'transparent',
+            vAxis: {title: 'Counts',titleTextStyle : {bold: 'true',color: 'white'},textStyle:{color: 'white'},gridlines: {color: 'none'},format:'0'},
+            hAxis: {title: 'Labels',titleTextStyle : {bold: 'true'},textStyle:{bold: 'true'},gridlines: {color: 'none'}},
+            horizontalAlign: "center",
+            chartArea:{bottom:"50",width:"70%",height:"90%"},
+            isStacked: true,
+            legend: { textStyle: {color: 'white'} },
+            colors: ['#DC3912']
+           }
+
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('self_bar'));
+      if(selValue == "Comment"){
+        chart.draw(data, options_orange);
+      }
+      else{
+        chart.draw(data, options);
+      }
+      
+    }
+
+    }
+    </script>
+  {% endblock %}
+</body>
+</html>

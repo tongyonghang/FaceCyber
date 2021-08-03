@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'css/accounts_style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>FaceCyber Cyber-Aggression</title>
+</head>
+
+<body style="background-image:url('{%static 'image/1.jpg' %}');">
+  {% block content %}
+<!-- Navbar -->
+<div class="w3-top">
+    <div class="w3-bar w3-light-grey w3-card w3-large">
+      <a class="w3-bar-item w3-padding-large">FaceCyber</a>
+      <a href="/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">Logout</a>
+      <form action="profile" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="profile_input" value="{{username}}">
+        <button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right" type='submit'>Profile</button>
+     </form>
+      <form action="friend" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="friend_input" value="{{username}}">
+        <button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right" type='submit'>Friends</button>
+     </form>
+     <form action="self" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="self_input" value="{{username}}">
+        <button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right" type='submit'>Self</button>
+     </form>
+      <a class="w3-bar-item w3-padding-large w3-right">Welcome {{username}}</a>
+    </div>
+</div>
+
+<div class="profile box" id="profile" style="color:white;">
+  <div class="centered">
+    <div class="username space">
+    <form method="post" action="main">
+      {% csrf_token %}
+      <label class="username label" for="username">Username</label>
+      <input type="text" id="input username" class="username" name="profile_username" placeholder="Username" value="{{username}}" readonly>
+    </div>
+      <div class="password space">
+        <label class="password label" for="password">Password</label>
+        <input type="text" id="input password" class="password" name="profile_password" placeholder="Password" value="{{password}}" readonly>
+    </div>  
+      <div class="fb_name space">
+        <label class="fb_name label" for="fb_name">Facebook Name</label>
+        <input type="text" id="input fb_name" class="fb_name" name="profile_fb_name" placeholder="Facebook name" value="{{facebook_name}}">
+    </div> 
+    <div class="fb_email space">
+      <label class="fb_email label" for="fb_email">Facebook Email</label>
+        <input type="text" id="input fb_email" class="fb_email" name="profile_fb_email" placeholder="Facebook email" value="{{facebook_email}}">
+    </div>
+      <div class="fb_password space">
+        <label class="fb_password label" for="fb_password">Facebook Password</label>
+        <input type="text" id="input fb_password" class="fb_password" name="profile_fb_password" placeholder="Facebook password" value="{{facebook_password}}">
+    </div>  
+      <div class="fb_link space">
+        <label class="fb_link label" for="fb_link">Facebook Profile Link</label>
+        <input type="text" id="input fb_link" class="fb_link" name="profile_fb_link" placeholder="Facebook link" value="{{facebook_link}}">
+    </div>
+    <div class="edit_button space">
+      <p class="submit"><input type="submit" name="commit" value="Save change" onclick="SaveChange_function()"></p>
+    </div>
+    </form>
+      <div class="edit_button space" style="top:-30px;">
+        <button class="default" onclick = "Default_function()">Reset to default</button>
+      </div>
+  </div>
+</div>
+
+  <script>
+  // Used to toggle the menu on small screens when clicking on the menu button
+
+  function Default_function(){
+    document.getElementById("input username").value = "{{username}}";
+    document.getElementById("input password").value = "{{password}}";
+    document.getElementById("input fb_name").value = "{{facebook_name}}";
+    document.getElementById("input fb_email").value = "{{facebook_email}}";
+    document.getElementById("input fb_password").value = "{{facebook_password}}";
+    document.getElementById("input fb_link").value = "{{facebook_link}}";
+    alert("Your information has been reset to default !");
+  }
+
+  function SaveChange_function(){
+    alert("Your information has been saved ! ");
+  }
+  </script>
+  {% endblock %}
+</body>
+</html>

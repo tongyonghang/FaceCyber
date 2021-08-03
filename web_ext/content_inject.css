@@ -1,0 +1,57 @@
+.tooltip i::after {
+  content: '\00d7'; display: block;
+  font-size: 10px; font-style: normal; font-weight: 600; color: red;
+}
+.tooltips {
+    background-color: yellow;
+    text-decoration: underline;
+    text-decoration-color: red;
+    text-decoration-style: double;
+  }
+
+  .mark {
+    background-color: yellow;
+    text-decoration: underline;
+    text-decoration-color: red;
+    text-decoration-style: double;
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-left: 3px solid turquoise;
+    border-top: 3px solid turquoise;
+    border-right: 3px solid greenyellow;
+    border-bottom: 3px solid greenyellow;
+    text-decoration: underline;
+    text-decoration-color: red;
+    text-decoration-style: double;
+    background-color: yellow;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 280px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid darkgrey;
+    padding: 3px;
+    caret-color: transparent;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 10;
+    left:50%;
+  }
+
+  .tooltiptext:before{
+    font-size: 12px;
+    font-weight: bold;
+    content:"Bad word! Please delete it before hurting others!";
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

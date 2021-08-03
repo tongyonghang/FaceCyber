@@ -1,0 +1,43 @@
+{
+    "name": "FaceCyber Extension",
+    "version": "1.0",
+    "description": "It is a FaceCyber Chrome Extension for data collecting and simple visualization purpose.",
+    "manifest_version": 2,
+    "icons": {
+      "128": "FC_1_128.png",
+      "64": "FC_1_64.png",
+      "48": "FC_1_48.png",
+      "32": "FC_1_32.png",
+      "16": "FC_1_16.png"
+    },
+    "browser_action":{
+        "default_popup": "popup.html"
+    },
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "content_scripts":[
+      {
+        "matches":["https://www.facebook.com/*"],
+        "run_at": "document_end",
+        "js": ["contentScript.js"],
+        "css":["content_inject.css"]
+      }
+    ],
+
+    "content_security_policy": "script-src 'self' https://*.google.com 'unsafe-eval'; object-src 'self'",
+    "permissions": [
+      "activeTab",
+      "tabs",
+      "http://127.0.0.1:8000/",
+      "https://www.facebook.com/",
+      "background",
+          "identity",
+          "notifications",
+          "storage"
+    ],
+    "web_accessible_resources": [
+      "en.txt"
+  ]
+  }

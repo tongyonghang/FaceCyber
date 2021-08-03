@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'css/accounts_style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>FaceCyber-Register</title>
+</head>
+<body style="background-image:url('{%static 'image/1.jpg' %}');">
+    <div class="w3-top">
+        <div class="w3-bar w3-light-grey w3-card w3-large">
+          <a href="/" class="w3-bar-item w3-button w3-padding-large">FaceCyber</a>
+          <a href="/accounts/login" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">Login</a>
+        </div>
+    <div class="login">
+        <h1>Register New Account</h1>
+        <form method="post" action="register">
+            {% csrf_token %}
+          <label for="username">Username (Required)</label>
+          <p><input type="text" name="username" placeholder="Username"></p>
+          <label for="password">Password (Required)</label>
+          <p><input type="password" name="password" placeholder="Password"></p>
+          <label for="Facebook_username">Facebook Username</label>
+          <p><input type="text" name="Facebook_username" placeholder="Facebook username"></p>
+          <label for="email">Facebook Email</label>
+          <p><input type="text" name="Facebook_email" placeholder="Facebook Email"></p>
+          <label for="Facebook_password">Facebook Password</label>
+          <p><input type="password" name="Facebook_password" placeholder="Facebook password"></p>
+          <label for="Facebook_link">Facebook Profile Link</label>
+          <p><input type="text" name="Facebook_link" placeholder="Facebook profile link"></p>
+          {% for message in messages %}
+          <p style="color:red"> {{message}} </p>
+          {% endfor %}
+          <p class="term">
+            <label>
+              <input type="checkbox" name="term_checked">
+              By clicking this you agree to our <a href="#" style="color:dodgerblue" onclick="policy()">Terms & Privacy</a>.
+            </label>
+          </p>
+          <p class="submit"><input type="submit" name="commit" value="Register"></p>
+        </form>
+      </div>
+
+      <script>
+        function policy(){
+          var newline ="\r\n\n";
+          var msg = "1. Please allow us to have your Facebook information for data collection procedure.";
+          msg += newline;
+          msg += "2. We will keep your information in safe and only used for our FaceCyber operation.";
+          msg += newline;
+          msg += "3. Please make sure your Facebook information are correct in order to success our data collection procedure.";
+          msg += newline;
+          msg += "Thank you and have a nice day.";
+          alert(msg);
+        }
+      </script>
+
+</body>
+</html>
