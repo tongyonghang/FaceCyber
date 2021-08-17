@@ -1,4 +1,4 @@
-# FaceCyber (Cyber-aggression Detection From Social Media - FB )
+# FaceCyber (Cyber-aggression/Cyber-bullying/Aggressive word Detection From Social Media - FB )
 My Final Year Project in Universiti Sains Malaysia (USM), Penang, Malaysia, which receive gold reward in USM CS Pixel 2021
 
 Noted that this project will suitable for running in local machine, please be careful when testing in production.
